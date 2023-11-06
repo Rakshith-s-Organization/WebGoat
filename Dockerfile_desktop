@@ -1,6 +1,12 @@
-FROM alpine:3.14.2
+# Use an outdated Alpine Linux base image
+FROM alpine:3.10
 
-# Install curl, which has known vulnerabilities
-RUN apk --no-cache add curl
+# Install a vulnerable package (for demonstration purposes)
+RUN apk --update add openssl=1.0.2q-r0
 
-CMD ["echo", "Hello, World!"]
+
+# Specify a command to run your application
+CMD ["app"]
+
+# Vulnerable package and version:
+# - OpenSSL version 1.0.2q-r0 has known vulnerabilities

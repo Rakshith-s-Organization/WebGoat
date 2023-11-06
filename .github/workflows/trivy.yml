@@ -29,12 +29,14 @@ jobs:
           tar xzvf trivy_0.20.0_Linux-64bit.tar.gz
           sudo mv trivy /usr/local/bin/
           rm trivy_0.20.0_Linux-64bit.tar.gz
+      
       - name: Install trivy-combine
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.20.0/trivy-combine_0.20.0_Linux-64bit.tar.gz
           tar xzvf trivy-combine_0.20.0_Linux-64bit.tar.gz
           sudo mv trivy-combine /usr/local/bin/
           rm trivy-combine_0.20.0_Linux-64bit.tar.gz
+
 
       - name: Build and scan multiple Dockerfiles
         run: |

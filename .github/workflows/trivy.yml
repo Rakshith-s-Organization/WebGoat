@@ -36,16 +36,14 @@ jobs:
 
           for file in "${dockerfiles[@]}"; do
             docker build -t "docker.io/my-organization/my-app:${{ github.sha }}-$file" -f $file .
-            
-            # Run Trivy for each Dockerfile and generate SARIF results
-            trivy image -f sarif -o "trivy-results-$file.sarif" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
+            trivy image -f json -o "trivy-results-$file.json" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
           done
 
       - name: Combine Trivy scan results
         run: |
-          trivy-combine -o trivy-results-combined.sarif trivy-results-*.sarif
+          trivy-combine -o trivy-results-combined.json trivy-results-*.json
 
       - name: Upload combined Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-results-combined.sarif'
+          sarif_file: 'trivy-results-combined.json'

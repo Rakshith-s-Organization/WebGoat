@@ -36,14 +36,29 @@ jobs:
 
           for file in "${dockerfiles[@]}"; do
             docker build -t "docker.io/my-organization/my-app:${{ github.sha }}-$file" -f $file .
-            trivy image -f sarif -o "trivy-results-$file.sarif" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
+            trivy image -f json -o "trivy-results-$file.json" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
           done
 
-      - name: Combine Trivy scan results
+      - name: Convert Trivy scan results to SARIF
         run: |
-          cat trivy-results-*.sarif > trivy-results-combined.sarif
+          jq -n --arg trivyJson "$(cat trivy-results-*.json)" '{
+            "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            "version": "2.1.0",
+            "runs": [
+              {
+                "tool": {
+                  "driver": {
+                    "name": "Trivy",
+                    "informationUri": "https://github.com/aquasecurity/trivy",
+                    "rules": []
+                  }
+                },
+                "results": [$trivyJson]
+              }
+            ]
+          }' > trivy-results-sarif.json
 
       - name: Upload combined Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-results-combined.sarif'
+          sarif_file: 'trivy-results-sarif.json'

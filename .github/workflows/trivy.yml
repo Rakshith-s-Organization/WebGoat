@@ -22,7 +22,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.1.0
       - name: Build and scan multiple Dockerfiles
         run: |
           dockerfiles=("Dockerfile" "Dockerfile_desktop")  # List your Dockerfile names here

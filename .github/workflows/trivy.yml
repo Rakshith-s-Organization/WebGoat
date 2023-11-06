@@ -36,17 +36,8 @@ jobs:
 
           for file in "${dockerfiles[@]}"; do
             docker build -t "docker.io/my-organization/my-app:${{ github.sha }}-$file" -f $file .
-          done
-        # Save the Dockerfile list for later
-        echo "${dockerfiles[@]}" > dockerfile_list.txt
-
-      - name: Run Trivy vulnerability scanner
-        run: |
-          # Load the Dockerfile list
-          IFS=" " read -a dockerfiles <<< "$(cat dockerfile_list.txt)"
-          
-          # Run Trivy for each Dockerfile
-          for file in "${dockerfiles[@]}"; do
+            
+            # Run Trivy for each Dockerfile and generate SARIF results
             trivy image -f sarif -o "trivy-results-$file.sarif" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
           done
 

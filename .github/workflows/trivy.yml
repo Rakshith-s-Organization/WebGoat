@@ -23,7 +23,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install Trivy
-        uses: aquasecurity/setup-trivy@v0.1.0
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.20.0/trivy_0.20.0_Linux-64bit.tar.gz
+          tar xzvf trivy_0.20.0_Linux-64bit.tar.gz
+          sudo mv trivy /usr/local/bin/
+          rm trivy_0.20.0_Linux-64bit.tar.gz
+
       - name: Build and scan multiple Dockerfiles
         run: |
           dockerfiles=("Dockerfile" "Dockerfile_desktop")  # List your Dockerfile names here

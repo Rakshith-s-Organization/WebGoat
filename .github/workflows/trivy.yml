@@ -37,7 +37,11 @@ jobs:
             docker build -t "docker.io/my-organization/my-app:${{ github.sha }}-$file" -f $file .
             trivy image -f sarif -o "trivy-results-$file.sarif" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
           done
-
+      - name: Run Trivy vulnerability scanner
+        run: |
+          for file in "${dockerfiles[@]}"; do
+            trivy image -f sarif -o "trivy-results-$file.sarif" "docker.io/my-organization/my-app:${{ github.sha }}-$file"
+          done
       - name: Combine Trivy scan results
         run: |
           trivy-combine -o trivy-results-combined.sarif trivy-results-*.sarif

@@ -5,6 +5,7 @@
 
 name: trivy
 
+
 on:
   push:
     branches: [ "main" ]

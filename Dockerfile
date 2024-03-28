@@ -4,3 +4,4 @@ FROM alpine:3.14.2
 RUN apk --no-cache add curl
 
 CMD ["echo", "Hello, World!"]
+  

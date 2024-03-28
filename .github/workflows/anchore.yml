@@ -14,10 +14,10 @@ name: Anchore Grype vulnerability scan
 
 on:
   push:
-    branches: [ "main" , "dev"]
+    branches: [ "main" , "dev", "app-release-1.0.0"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main", "dev" ]
+    branches: [ "main", "dev", "app-release-1.0.0" ]
   schedule:
     - cron: '34 17 * * 4'
 

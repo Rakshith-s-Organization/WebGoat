@@ -6,3 +6,4 @@ ENV PASSWORD=mysecretpassword
 
 # Specify a command to run your application
 CMD ["python", "app.py"]
+ 
